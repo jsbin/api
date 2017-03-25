@@ -1,0 +1,50 @@
+{
+  "name": "jsbin4",
+  "version": "1.0.0",
+  "private": true,
+  "description": "jsbin - refactored",
+  "main": "lib/index.js",
+  "now": {
+    "env": {
+      "NODE_ENV": "production",
+      "LOGGLY_TOKEN": "@loggly_token",
+      "LOGGLY_DOMAIN": "@loggly_domain"
+    },
+    "alias": "4.jsbin.com"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "NODE_ENV=dev nodemon -w lib .",
+    "now-start": "node .",
+    "env": "env"
+  },
+  "keywords": [
+    "jsbin"
+  ],
+  "author": "Remy Sharp <remy@leftlogic.com>",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "compression": "^1.6.2",
+    "dotenv": "^4.0.0",
+    "express": "^4.15.2",
+    "express-hbs": "^1.0.4",
+    "http-status-codes": "^1.1.6",
+    "jsonwebtoken": "^7.3.0",
+    "morgan": "^1.8.1",
+    "node-fetch": "^1.6.3",
+    "passport": "^0.3.2",
+    "passport-github2": "^0.1.10",
+    "request": "^2.81.0",
+    "serve-favicon": "^2.4.2",
+    "server-timings": "^1.0.4",
+    "shortid": "^2.2.8",
+    "undefsafe": "^2.0.1",
+    "universal-analytics": "^0.4.12"
+  },
+  "devDependencies": {
+    "proxyquire": "^1.7.11",
+    "sinon": "^2.1.0",
+    "tap": "^10.3.0"
+  }
+}
