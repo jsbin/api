@@ -1,0 +1,8 @@
++ name
+simple html
+
+# GET /api/bin/canvas/1
+headers:
+  Content-Type: text/html
+
++ expect

@@ -1,0 +1,9 @@
++ name
+simple json (with deep link)
+
+# GET /api/bin/canvas/1/url
+headers:
+  Content-Type: application/json
+
++ expect
+"canvas"
