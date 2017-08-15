@@ -1,8 +1,8 @@
 # Writing tests
 
-If an issue is raised or a PR that adds some functionality, most tests can be written in this bespoke operation test format (below). If there's some additional complicated behaviour required, then you will need to write a full test using tap (see exising tests for examples).
+If an issue is raised or a PR that adds some functionality, most tests can be written in this bespoke operation test format (below). If there's some additional complicated behaviour required, then you will need to write a full test using tap (see existing tests for examples).
 
-However, if you test can be satified with the follow structure, the operation test is the way to go.
+However, if you test can be satisfied with the follow structure, the operation test is the way to go.
 
 1. Here's my starting store
 2. Do some RESTful operation
@@ -12,7 +12,7 @@ However, if you test can be satified with the follow structure, the operation te
 
 ## Operation test
 
-The only reqirement is adding a new file to the [operations](operations) test directory. The file extension is `.op` and typically the filename will match an issue number.
+The only requirement is adding a new file to the [operations](operations) test directory. The file extension is `.op` and typically the filename will match an issue number.
 
 The format of the file is as follows:
 
@@ -35,7 +35,7 @@ headers:
 }
 ```
 
-For example, the followng operation tests that the `PATCH` successfully removes the property name on the `blog` path.
+For example, the following operation tests that the `PATCH` successfully removes the property name on the `blog` path.
 
 ```text
 + setup

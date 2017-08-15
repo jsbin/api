@@ -1,0 +1,9 @@
++ name
+get rem user
+
+# GET /api/user/
+headers:
+  authorization: token ${token}
+
++ include
+{"username":"test"}

@@ -5,4 +5,5 @@ simple html
 headers:
   Content-Type: text/html
 
-+ expect
++ include
+{"url":"canvas"}

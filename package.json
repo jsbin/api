@@ -1,8 +1,8 @@
 {
-  "name": "jsbin4",
-  "version": "1.0.0",
+  "name": "jsbin-api",
+  "version": "1.0.1",
   "private": true,
-  "description": "jsbin - refactored",
+  "description": "jsbin's API (refactored)",
   "main": "lib/index.js",
   "now": {
     "env": {
@@ -13,8 +13,9 @@
     "alias": "4.jsbin.com"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "start": "NODE_ENV=dev nodemon -w lib .",
+    "pretest": "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
+    "test": "NODE_ENV=test PORT=7331 tap tests/*.test.js -Rspec; kill $(cat .pid); rm .pid",
+    "start": "NODE_ENV=development nodemon -w lib .",
     "now-start": "node .",
     "env": "env"
   },
@@ -27,24 +28,31 @@
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "dotenv": "^4.0.0",
-    "express": "^4.15.2",
+    "express": "^4.15.4",
     "express-hbs": "^1.0.4",
-    "http-status-codes": "^1.1.6",
-    "jsonwebtoken": "^7.3.0",
+    "http-status-codes": "^1.2.0",
+    "jsonwebtoken": "^7.4.2",
     "morgan": "^1.8.1",
-    "node-fetch": "^1.6.3",
+    "ms": "^2.0.0",
+    "mysql2": "^1.4.0",
+    "node-fetch": "^1.7.2",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
     "request": "^2.81.0",
+    "sequelize": "^4.5.0",
     "serve-favicon": "^2.4.2",
     "server-timings": "^1.0.4",
     "shortid": "^2.2.8",
+    "stripe": "^4.24.0",
     "undefsafe": "^2.0.1",
-    "universal-analytics": "^0.4.12"
+    "universal-analytics": "^0.4.15"
   },
   "devDependencies": {
+    "expect": "^1.20.2",
     "proxyquire": "^1.7.11",
-    "sinon": "^2.1.0",
-    "tap": "^10.3.0"
+    "sinon": "^2.4.1",
+    "sqlite3": "^3.1.9",
+    "tap": "^10.7.2",
+    "tap-only": "0.0.5"
   }
 }
