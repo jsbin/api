@@ -19,9 +19,7 @@
     "now-start": "node .",
     "env": "env"
   },
-  "keywords": [
-    "jsbin"
-  ],
+  "keywords": ["jsbin"],
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {

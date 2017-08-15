@@ -31,7 +31,7 @@ function request(
     url,
     json,
     headers: {
-      authorization: `token ${user.apikey}`,
+      authorization: `token ${user.apiKey}`,
     },
   }).then(res => res.body);
 }
@@ -39,7 +39,7 @@ function request(
 function setup() {
   return User.destroy({ where: { username: 'test' } }).then(() => {
     return User.create({
-      apikey: '123456789kajd',
+      apiKey: '123456789kajd',
       githubId: 1,
       email: null,
       username: 'test',

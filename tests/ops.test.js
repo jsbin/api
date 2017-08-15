@@ -42,8 +42,8 @@ Object.keys(tests).forEach(id => {
     const expect = tests[id].expect;
     const include = tests[id].include;
     const tokens = {
-      token: user.apikey,
-      // bearer: user.generateBearer(),
+      token: user.apiKey,
+      bearer: user.generateBearer(),
     };
 
     const requests = tests[id].op.reduce((acc, op) => {
