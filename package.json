@@ -2,27 +2,26 @@
   "name": "jsbin-api",
   "version": "1.0.1",
   "private": true,
+  "engines": {
+    "node": "8.x.x"
+  },
   "description": "jsbin's API (refactored)",
   "main": "lib/index.js",
-  "now": {
-    "env": {
-      "NODE_ENV": "production",
-      "LOGGLY_TOKEN": "@loggly_token",
-      "LOGGLY_DOMAIN": "@loggly_domain"
-    },
-    "alias": "4.jsbin.com"
-  },
   "scripts": {
-    "pretest": "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
-    "test": "NODE_ENV=test PORT=7331 tap tests/*.test.js -Rspec; kill $(cat .pid); rm .pid",
-    "start": "NODE_ENV=development nodemon -w lib .",
-    "now-start": "node .",
+    "preintegration": "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
+    "integration": "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy --watch; kill $(cat .pid); rm .pid",
+    "dev": "NODE_ENV=development nodemon -w lib .",
+    "start": "node --harmony .",
+    "now-start": "node --harmony .",
     "env": "env"
   },
-  "keywords": ["jsbin"],
+  "keywords": [
+    "jsbin"
+  ],
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {
+    "@remy/envy": "^1.0.1",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "dotenv": "^4.0.0",
@@ -32,7 +31,7 @@
     "jsonwebtoken": "^7.4.2",
     "morgan": "^1.8.1",
     "ms": "^2.0.0",
-    "mysql2": "^1.4.0",
+    "mysql2": "^1.5.1",
     "node-fetch": "^1.7.2",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
@@ -46,11 +45,16 @@
     "universal-analytics": "^0.4.15"
   },
   "devDependencies": {
-    "expect": "^1.20.2",
-    "proxyquire": "^1.7.11",
-    "sinon": "^2.4.1",
-    "sqlite3": "^3.1.9",
-    "tap": "^10.7.2",
-    "tap-only": "0.0.5"
+    "babel-eslint": "^7.2.3",
+    "eslint": "^4.12.1",
+    "eslint-config-react-app": "^2.0.1",
+    "eslint-plugin-flowtype": "^2.39.1",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jest": "^21.3.2",
+    "eslint-plugin-jsx-a11y": "^5.1.1",
+    "eslint-plugin-node": "^5.2.1",
+    "eslint-plugin-react": "^7.5.1",
+    "jest": "^21.2.1",
+    "sqlite3": "^3.1.13"
   }
 }

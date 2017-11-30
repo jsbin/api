@@ -1,23 +1,16 @@
-const tap = require('tap');
-const test = require('tap-only');
 const fs = require('fs');
-const Expect = require('expect');
-const db = require('../lib/db');
-const { op, setup, teardown, _request: request } = require('./utils');
+const db = require('../../lib/db');
+const { op, setup, _request: request } = require('./utils');
 let user = null;
 
-test('load user', t => {
-  return db.sync().then(() => {
-    return setup({}).then(u => (user = u)).then(() => t.pass('user loaded'));
-  });
+beforeAll(() => {
+  return db.sync().then(() =>
+    setup({}).then(u => {
+      console.log('user', user);
+      user = u;
+    })
+  );
 });
-
-// reset the user store
-// tap.afterEach(done => {
-// user.save().then(() => done());
-// });
-
-tap.tearDown(teardown);
 
 const dir = __dirname + '/operations/';
 const tests = fs
@@ -37,9 +30,7 @@ const tests = fs
 
 Object.keys(tests).forEach(id => {
   test(tests[id].name || `issue #${id}`, t => {
-    // user.store = tests[id].setup;
-
-    const expect = tests[id].expect;
+    const expected = tests[id].expect;
     const include = tests[id].include;
     const tokens = {
       token: user.apiKey,
@@ -59,12 +50,9 @@ Object.keys(tests).forEach(id => {
           method: op.method,
           body: op.body,
         }).then(res => {
-          t.ok(
-            res.statusCode < 300,
-            `${op.method} ${op.url}: ${res.statusCode}`
-          );
+          expect(res.statusCode).toBeLessThan(300);
           if (res.statusCode === 500) {
-            t.fail(res.body);
+            throw new Error(res.body);
           }
           return res;
         })
@@ -83,16 +71,9 @@ Object.keys(tests).forEach(id => {
       })
       .then(store => {
         if (include) {
-          t.ok(
-            Expect(store).toInclude(include),
-            `response includes: ${JSON.stringify(include)}`
-          );
+          expect(store).toMatch(include);
         } else {
-          t.deepEqual(
-            expect,
-            store,
-            `expected response matches: ${JSON.stringify(store)}`
-          );
+          expect(store).toEqual(expected);
         }
       });
   });

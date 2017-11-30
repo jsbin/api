@@ -1,12 +1,6 @@
-const dotenv = require('dotenv');
-dotenv.config({
-  silent: true,
-  path: `${__dirname}/../.env.${process.env.NODE_ENV}`,
-});
-
 const fs = require('fs');
 const _request = require('./request-then');
-const User = require('../lib/db/user');
+const User = require('../../lib/db/user');
 // "test" is the username
 const root = `http://localhost:${process.env.PORT}`;
 const base = `${root}/api`;
@@ -14,7 +8,6 @@ const base = `${root}/api`;
 module.exports = {
   setup,
   updateUser,
-  teardown,
   request,
   base,
   _request,
@@ -51,12 +44,6 @@ function updateUser({ username }) {
   return User.findOne({ where: { username } });
 }
 
-function teardown() {
-  // return User.remove({ username: 'test'}).then(() => {
-  //   mongoose.connection.close();
-  // });
-}
-
 function op(file) {
   let index = -1;
   const requests = [];
@@ -74,7 +61,10 @@ function op(file) {
 
     if (line[0] === '+') {
       // slurp blank lines and the body
-      const type = line.trim().slice(1).trim();
+      const type = line
+        .trim()
+        .slice(1)
+        .trim();
       i++;
       while ((line = lines[i].trim())) {
         config[type] += line;
