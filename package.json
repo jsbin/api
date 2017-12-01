@@ -8,16 +8,15 @@
   "description": "jsbin's API (refactored)",
   "main": "lib/index.js",
   "scripts": {
-    "preintegration": "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
-    "integration": "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy --watch; kill $(cat .pid); rm .pid",
+    "preintegration":
+      "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
+    "integration":
+      "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy --watch; kill $(cat .pid); rm .pid",
     "dev": "NODE_ENV=development nodemon -w lib .",
-    "start": "node --harmony .",
-    "now-start": "node --harmony .",
+    "start": "node .",
     "env": "env"
   },
-  "keywords": [
-    "jsbin"
-  ],
+  "keywords": ["jsbin"],
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {
@@ -37,7 +36,7 @@
     "passport-github2": "^0.1.10",
     "request": "^2.81.0",
     "sequelize": "^4.5.0",
-    "serve-favicon": "^2.4.2",
+    "serve-favicon": "^2.4.5",
     "server-timings": "^1.0.4",
     "shortid": "^2.2.8",
     "stripe": "^4.24.0",

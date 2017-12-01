@@ -1,9 +1,10 @@
 const fs = require('fs');
 const _request = require('./request-then');
 const User = require('../../lib/db/user');
+const parsed = require('url').parse(process.env.API);
 // "test" is the username
-const root = `http://localhost:${process.env.PORT}`;
-const base = `${root}/api`;
+const root = `${parsed.protocol}//${parsed.host}`;
+const base = `${root}${parsed.pathname}`;
 
 module.exports = {
   setup,

@@ -1,1 +1,3 @@
-module.exports = Object.assign(require('@remy/eslint/node'), {});
+const node = require('@remy/eslint/node');
+console.log(node);
+module.exports = Object.assign(node, {});
