@@ -13,8 +13,11 @@
     "integration":
       "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js; kill $(cat .pid); rm .pid",
     "test": "npm run integration",
+    "tunnel": "lt --port $(($(envy PORT)+1)) -s jsbin",
+    "port-forward":
+      "ssh -g -N -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost",
     "dev":
-      "lt --port $(envy PORT) -s jsbin & NODE_ENV=development nodemon -w lib .",
+      "npm run port-forward & npm run tunnel & NODE_ENV=development nodemon -w lib .",
     "start": "node .",
     "env": "env"
   },
