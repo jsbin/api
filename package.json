@@ -8,15 +8,17 @@
   "description": "jsbin's API (refactored)",
   "main": "lib/index.js",
   "scripts": {
-    "preintegration": "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
-    "integration": "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy --watch; kill $(cat .pid); rm .pid",
-    "dev": "lt --port $(envy PORT) -s jsbin & NODE_ENV=development nodemon -w lib .",
+    "preintegration":
+      "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
+    "integration":
+      "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js; kill $(cat .pid); rm .pid",
+    "test": "npm run integration",
+    "dev":
+      "lt --port $(envy PORT) -s jsbin & NODE_ENV=development nodemon -w lib .",
     "start": "node .",
     "env": "env"
   },
-  "keywords": [
-    "jsbin"
-  ],
+  "keywords": ["jsbin"],
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {
