@@ -1,15 +1,25 @@
+const request = require('supertest');
+const app = require('../../lib/index');
+
 const fs = require('fs');
 const db = require('../../lib/db');
-const { op, setup, _request: request } = require('./utils');
+const { op, setup } = require('./utils');
 let user = null;
 
 beforeAll(() => {
-  return db.sync().then(() =>
-    setup({}).then(u => {
-      console.log('user', user);
+  return db
+    .sync()
+    .then(() => setup({}))
+    .then(u => {
       user = u;
     })
-  );
+    .catch(e => {
+      expect(e).toBe(false);
+    });
+});
+
+afterAll(() => {
+  db.close();
 });
 
 const dir = __dirname + '/operations/';
@@ -20,16 +30,17 @@ const tests = fs
       // support for testing a single op
       return _.includes(process.env.TEST);
     }
-    return true;
+
+    return !_.startsWith('-');
   })
   .reduce((acc, file) => {
     const [id] = file.split('.');
-    acc[id] = op(dir + file);
+    acc[id] = op({ file: dir + file });
     return acc;
   }, {});
 
 Object.keys(tests).forEach(id => {
-  test(tests[id].name || `issue #${id}`, t => {
+  test(tests[id].name || `issue #${id}`, () => {
     const expected = tests[id].expect;
     const include = tests[id].include;
     const tokens = {
@@ -43,38 +54,36 @@ Object.keys(tests).forEach(id => {
         op.headers.authorization = scheme + ' ' + tokens[scheme];
       }
 
-      return acc.then(() =>
-        request({
-          url: op.url,
-          headers: op.headers,
-          method: op.method,
-          body: op.body,
-        }).then(res => {
+      return acc.then(() => {
+        const { headers, body, url } = op;
+        const method = op.method.toLowerCase();
+
+        let req = request(app)[method](url);
+
+        if (body) {
+          req = req.type('form').send(body);
+        }
+
+        for (let [key, value] of Object.entries(headers)) {
+          req = req.set(key, value);
+        }
+
+        return req.then(res => {
           expect(res.statusCode).toBeLessThan(300);
           if (res.statusCode === 500) {
             throw new Error(res.body);
           }
-          return res;
-        })
-      );
+          return res.body;
+        });
+      });
     }, Promise.resolve());
 
-    return requests
-      .then(res => {
-        if (res.req.method === 'GET') {
-          if (res.headers['content-type'].includes('application/json')) {
-            return JSON.parse(res.body);
-          }
-          return res.body;
-        }
-        return t.fail('Only GET currently supported');
-      })
-      .then(store => {
-        if (include) {
-          expect(store).toMatch(include);
-        } else {
-          expect(store).toEqual(expected);
-        }
-      });
+    return requests.then(store => {
+      if (include) {
+        expect(store).toEqual(expect.objectContaining(include));
+      } else {
+        expect(store).toEqual(expected);
+      }
+    });
   });
 });

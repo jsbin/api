@@ -1,6 +1,7 @@
 const fs = require('fs');
 const _request = require('./request-then');
 const User = require('../../lib/db/user');
+const Bin = require('../../lib/db/bin');
 const parsed = require('url').parse(process.env.API);
 // "test" is the username
 const root = `${parsed.protocol}//${parsed.host}`;
@@ -31,21 +32,38 @@ function request(
 }
 
 function setup() {
-  return User.destroy({ where: { username: 'test' } }).then(() => {
+  let user = null;
+  const p1 = User.destroy({ where: { username: 'test' } }).then(() => {
     return User.create({
       apiKey: '123456789kajd',
       githubId: 1,
       email: null,
       username: 'test',
-    });
+    }).then(u => (user = u));
   });
+
+  const p2 = Bin.destroy({ where: { url: 'canvas' } }).then(() => {
+    const bin = {
+      url: 'canvas',
+      revision: 1,
+      javascript: '// 1',
+      html: '<html></html>',
+      css: '* {}',
+    };
+    return Promise.all([
+      Bin.create(bin),
+      Bin.create({ ...bin, revision: 2, javascript: '// 2' }),
+    ]);
+  });
+
+  return Promise.all([p1, p2]).then(() => user);
 }
 
 function updateUser({ username }) {
   return User.findOne({ where: { username } });
 }
 
-function op(file) {
+function op({ file, root = '' }) {
   let index = -1;
   const requests = [];
   const config = {

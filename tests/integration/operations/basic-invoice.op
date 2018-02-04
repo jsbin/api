@@ -1,9 +1,0 @@
-+ name
-get invoice #1
-
-# GET /api/user/invoice/1
-headers:
-  authorization: token ${token}
-
-+ include
-{"id":1}

@@ -6,4 +6,4 @@ headers:
   Content-Type: text/html
 
 + include
-{"url":"canvas"}
+{"url": "canvas"}

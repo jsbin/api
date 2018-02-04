@@ -13,11 +13,15 @@
     "integration":
       "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js; kill $(cat .pid); rm .pid",
     "test": "npm run integration",
+    "pretest": "rm -rf jsbin-test.sqlite",
+    "pretest-local": "npm run pretest",
+    "test-local":
+      "NODE_ENV=test jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js",
     "tunnel": "lt --port $(($(envy PORT)+1)) -s jsbin",
     "port-forward":
-      "ssh -g -N -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost",
-    "dev":
-      "npm run port-forward & npm run tunnel & NODE_ENV=development nodemon -w lib .",
+      "ssh -g -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost -N",
+    "dev": "npm run dev-server & npm run port-forward & npm run tunnel",
+    "dev-server": "NODE_ENV=development nodemon -w lib .",
     "start": "node .",
     "env": "env"
   },
@@ -25,7 +29,6 @@
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {
-    "@remy/envy": "^1.0.1",
     "body-parser": "^1.17.1",
     "compression": "^1.6.2",
     "dotenv": "^4.0.0",
@@ -35,6 +38,7 @@
     "http-status-codes": "^1.2.0",
     "jsbin-id": "^1.0.0",
     "jsonwebtoken": "^7.4.2",
+    "lodash.pick": "^4.4.0",
     "morgan": "^1.8.1",
     "ms": "^2.0.0",
     "mysql2": "^1.5.1",
@@ -51,7 +55,9 @@
     "universal-analytics": "^0.4.15"
   },
   "devDependencies": {
+    "@remy/envy": "^3.1.1",
     "@remy/eslint": "^1.3.0",
+    "ajv": "^5.5.2",
     "babel-eslint": "^7.2.3",
     "eslint": "^4.12.1",
     "eslint-config-react-app": "^2.0.1",
@@ -63,6 +69,7 @@
     "eslint-plugin-react": "^7.5.1",
     "jest": "^21.2.1",
     "localtunnel": "^1.8.3",
-    "sqlite3": "^3.1.13"
+    "sqlite3": "^3.1.13",
+    "supertest": "^3.0.0"
   }
 }
