@@ -9,16 +9,17 @@
   "main": "lib/server.js",
   "scripts": {
     "pretest": "rm -rf jsbin-test.sqlite",
-    "test": "NODE_ENV=test jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js",
+    "test":
+      "NODE_ENV=test jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js",
     "tunnel": "lt --port $(($(envy PORT)+1)) -s jsbin",
-    "port-forward": "ssh -g -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost -N",
+    "port-forward":
+      "ssh -g -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost -N",
     "dev": "npm run dev-server & npm run port-forward & npm run tunnel",
-    "dev-server": "NODE_ENV=development nodemon -w lib .",
+    "dev-server":
+      "GIT_REV=$(git rev-parse HEAD) NODE_ENV=development nodemon -w lib .",
     "start": "node ."
   },
-  "keywords": [
-    "jsbin"
-  ],
+  "keywords": ["jsbin"],
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {
