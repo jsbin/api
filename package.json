@@ -6,56 +6,43 @@
     "node": "8.x.x"
   },
   "description": "jsbin's API (refactored)",
-  "main": "lib/index.js",
+  "main": "lib/server.js",
   "scripts": {
-    "preintegration":
-      "NODE_ENV=test PORT=7331 node . & echo $! > .pid; sleep 1;",
-    "integration":
-      "NODE_ENV=test PORT=7331 jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js; kill $(cat .pid); rm .pid",
-    "test": "npm run integration",
     "pretest": "rm -rf jsbin-test.sqlite",
-    "pretest-local": "npm run pretest",
-    "test-local":
-      "NODE_ENV=test jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js",
+    "test": "NODE_ENV=test jest --setupTestFrameworkScriptFile=@remy/envy tests/**/*.test.js",
     "tunnel": "lt --port $(($(envy PORT)+1)) -s jsbin",
-    "port-forward":
-      "ssh -g -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost -N",
+    "port-forward": "ssh -g -L $(($(envy PORT)+1)):localhost:$(envy PORT) localhost -N",
     "dev": "npm run dev-server & npm run port-forward & npm run tunnel",
     "dev-server": "NODE_ENV=development nodemon -w lib .",
-    "start": "node .",
-    "env": "env"
+    "start": "node ."
   },
-  "keywords": ["jsbin"],
+  "keywords": [
+    "jsbin"
+  ],
   "author": "Remy Sharp <remy@leftlogic.com>",
   "license": "MIT",
   "dependencies": {
+    "@remy/envy": "^3.1.1",
     "body-parser": "^1.17.1",
-    "compression": "^1.6.2",
-    "dotenv": "^4.0.0",
     "express": "^4.15.4",
-    "express-hbs": "^1.0.4",
-    "haikunator": "^2.0.0",
     "http-status-codes": "^1.2.0",
     "jsbin-id": "^1.0.0",
     "jsonwebtoken": "^7.4.2",
     "lodash.pick": "^4.4.0",
+    "lru-cache": "^4.1.1",
     "morgan": "^1.8.1",
-    "ms": "^2.0.0",
     "mysql2": "^1.5.1",
-    "node-fetch": "^1.7.2",
     "passport": "^0.3.2",
     "passport-github2": "^0.1.10",
     "request": "^2.81.0",
     "sequelize": "^4.5.0",
     "serve-favicon": "^2.4.5",
     "server-timings": "^1.0.4",
-    "shortid": "^2.2.8",
     "stripe": "^4.24.0",
     "undefsafe": "^2.0.1",
     "universal-analytics": "^0.4.15"
   },
   "devDependencies": {
-    "@remy/envy": "^3.1.1",
     "@remy/eslint": "^1.3.0",
     "ajv": "^5.5.2",
     "babel-eslint": "^7.2.3",

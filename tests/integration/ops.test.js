@@ -1,5 +1,5 @@
 const request = require('supertest');
-const app = require('../../lib/index');
+const app = require('../../lib/server');
 
 const fs = require('fs');
 const db = require('../../lib/db');
@@ -31,6 +31,7 @@ const tests = fs
       return _.includes(process.env.TEST);
     }
 
+    // support ignoring files starting with `-`
     return !_.startsWith('-');
   })
   .reduce((acc, file) => {

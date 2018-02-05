@@ -45,7 +45,7 @@ For example, the following operation tests that the `PATCH` successfully removes
   }
 }
 
-# PATCH /me/blog
+# PATCH /bin/canvas
 Headers:
   authorization: token ${token}
   Content-Type: application/json
@@ -64,4 +64,3 @@ The following headers will be automatically expanded to include real valid token
 
 - `authorization: token ${token}`
 - `authorization: bearer ${token}`
-- The username for the tests is `test` - which is synonymous with the `/me` path

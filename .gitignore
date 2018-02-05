@@ -5,3 +5,4 @@ jsbin-test.sqlite
 .vagrant/
 tmp/
 Vagrantfile
+.vscode/
