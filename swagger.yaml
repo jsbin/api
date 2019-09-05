@@ -1,0 +1,337 @@
+swagger: '2.0'
+info:
+  title: JSBin API
+  description: The API backend for JSbin
+  version: 0.0.1
+schemes:
+  - http
+  - https
+basePath: /api
+produces:
+  - application/json
+securityDefinitions:
+  api_key:
+    type: apiKey
+    name: apikey
+    in: header
+security:
+  - api_key: []
+paths:
+  /bin:
+    post:
+      tags:
+        - Bins
+      summary: Submit a new bin
+      description: Creates a new bin for others to see
+      operationId: createbin
+      produces:
+        - application/json
+      parameters:
+        - in: body
+          name: body
+          description: Created bin object
+          required: false
+          schema:
+            $ref: '#/definitions/bin'
+      responses:
+        '200':
+          description: successfully created bin
+          schema:
+            $ref: '#/definitions/bin'
+        default:
+          description: successful operation
+  '/bin/{id}':
+    get:
+      tags:
+        - Bins
+      summary: Return a specific bin by id
+      description: |
+        Return a specific bin by id
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: An bin id
+          required: true
+      responses:
+        '200':
+          description: A specific bin
+          schema:
+            $ref: '#/definitions/bin'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+    patch:
+      tags:
+        - Bins
+      summary: 'Modify a bin, creating a new revision of it'
+      description: Update a bin
+      operationId: updatebin
+      produces:
+        - application/json
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: An bin object id
+          required: true
+        - in: body
+          name: body
+          description: Created bin object
+          required: false
+          schema:
+            $ref: '#/definitions/bin'
+      responses:
+        '200':
+          description: successfully updated bin
+          schema:
+            $ref: '#/definitions/bin'
+        default:
+          description: successful operation
+  '/bin/{id}/{rev}':
+    get:
+      tags:
+        - Bins
+      summary: Return a specific revision of a bin
+      description: |
+        Return a specific revision of a bin
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: An bin object id
+          required: true
+        - name: rev
+          in: path
+          type: integer
+          description: An bin revision number
+          required: true
+      responses:
+        '200':
+          description: A specific bin
+          schema:
+            $ref: '#/definitions/bin'
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /auth:
+    get:
+      tags:
+        - Auth
+      summary: The authentication endpoint
+      description: |
+        The authentication endpoint
+      responses:
+        '200':
+          description: N/A
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /auth/fail:
+    get:
+      tags:
+        - Auth
+      summary: Authentication failure
+      description: |
+        Authentication failure
+      responses:
+        '200':
+          description: N/A
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /auth/callback:
+    get:
+      tags:
+        - Auth
+      summary: The authentication callback endpoint - used to direct a user during auth
+      description: |
+        The authentication callback endpoint - used to direct a user during auth
+      responses:
+        '200':
+          description: N/A
+        default:
+          description: Unexpected error
+          schema:
+            $ref: '#/definitions/error'
+  /user:
+    get:
+      tags:
+        - Users
+      summary: Gets the current logged in user
+      description: |
+        Gets the current logged in user
+      responses:
+        '200':
+          description: The current logged in user
+          schema:
+            $ref: '#/definitions/user'
+        default:
+          description: successful operation
+  '/user/invoice/{id}':
+    get:
+      tags:
+        - Users
+      summary: Gets a user invoice by id
+      description: |
+        Gets a user invoice by id
+      parameters:
+        - name: id
+          in: path
+          type: string
+          description: An invoice object id
+          required: true
+      responses:
+        '200':
+          description: The specified Invoice
+          schema:
+            $ref: '#/definitions/invoice'
+        default:
+          description: successful operation
+definitions:
+  bin:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A unique identifier representing a specific bin.
+      url:
+        type: string
+        description: The bin's url slug
+      revision:
+        type: integer
+        description: This bin's current revision number
+      active:
+        type: string
+        description: Is this bin active?
+      javascript:
+        type: string
+        description: The javascript of this bin
+      html:
+        type: string
+        description: The HTML of this bin
+      css:
+        type: string
+        description: The CSS of this bin
+      settings:
+        type: string
+        description: 'This bin''s configuration (js flavour, html rendering type, etc)'
+  user:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A user's id
+      username:
+        type: string
+        description: A user's username
+      email:
+        type: string
+        description: A user's email
+      githubId:
+        type: string
+        description: The GitHub ID of a user
+      githubToken:
+        type: string
+        description: The GitHub Token of a user
+      apikey:
+        type: string
+        description: A user's API key
+      pro:
+        type: boolean
+        description: Is this user a pro user?
+  customer:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A customer's id
+      stripeId:
+        type: string
+        description: A customer's stripe id
+      username:
+        type: string
+        description: A customer's username
+      active:
+        type: boolean
+        description: Is this customer active?
+      plan:
+        type: string
+        description: Which plan is this customer on?
+  userBin:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A user's id
+      username:
+        type: string
+        description: A username (FK)
+      url:
+        type: string
+        description: The bin's url slug
+      revision:
+        type: integer
+        description: This bin's current revision number
+      summary:
+        type: string
+        description: A summary of the bin's purpose
+      archived:
+        type: boolean
+        description: Is this bin archived?
+      visibility:
+        type: string
+        description: 'Is this bin public, unlisted, or private?'
+  invoice:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A invoice id
+      receipt_number:
+        type: string
+        description: An invoice's receipt number
+      date:
+        type: string
+        description: The date of this invoice
+      lines:
+        type: array
+        description: A list of invoice line items
+  invoiceLineItem:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A invoice id
+      plan:
+        type: object
+        description: A paid plan type
+      amount:
+        type: number
+        description: A line item's total cost
+  paidPlan:
+    type: object
+    properties:
+      _id:
+        type: string
+        description: A plan id
+      name:
+        type: string
+        description: This plan's name
+      interval:
+        type: string
+        description: How often the plan will last per payment
+  error:
+    type: object
+    properties:
+      code:
+        type: integer
+        format: int32
+      message:
+        type: string
+      fields:
+        type: string
