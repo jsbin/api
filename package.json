@@ -36,7 +36,7 @@
     "passport": "^0.3.2",
     "passport-github2": "^0.1.11",
     "request": "^2.87.0",
-    "sequelize": "^4.37.10",
+    "sequelize": "^5.15.1",
     "serve-favicon": "^2.5.0",
     "server-timings": "^1.0.4",
     "stripe": "^4.25.0",
