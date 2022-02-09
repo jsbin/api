@@ -40,7 +40,7 @@
     "serve-favicon": "^2.5.0",
     "server-timings": "^1.0.4",
     "stripe": "^4.25.0",
-    "undefsafe": "^2.0.2",
+    "undefsafe": "^2.0.3",
     "universal-analytics": "^0.4.16",
     "uuid": "^3.3.2"
   },
